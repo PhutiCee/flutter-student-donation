@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1008871813888",
+    "project_id": "student-donation-94505",
+    "storage_bucket": "student-donation-94505.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008871813888:android:8d1db0efabbc35cff3b9e5",
+        "android_client_info": {
+          "package_name": "com.tpsekwadi.student_donation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1008871813888-2cd7oeori13oo52ecjuhhui2da9n3vv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgnDXZnEpKK1U_V7g2Yce7LiyvrJ7l0EM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1008871813888-2cd7oeori13oo52ecjuhhui2da9n3vv8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
