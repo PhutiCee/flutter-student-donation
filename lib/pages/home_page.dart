@@ -76,6 +76,7 @@ class _HomePageState extends State<HomePage> {
               leading: const Icon(Icons.person),
               title: const Text(' Top Donators '),
               onTap: () {
+                Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context){
                   return const TopDonator();
                 }));
@@ -85,6 +86,7 @@ class _HomePageState extends State<HomePage> {
               leading: const Icon(Icons.book),
               title: const Text(' Request Donation '),
               onTap: () {
+                Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context){
                   return const Category();
                 }));

@@ -180,6 +180,9 @@ class _FoodCategoryState extends State<FoodCategory> {
                                             height: 50,
                                             child: ElevatedButton(
                                               onPressed: () async {
+                                                setState(() {
+                                                  isLoading = true;
+                                                });
                                                 final data =
                                                     documents[index].data()
                                                         as Map<String, dynamic>;
@@ -212,6 +215,9 @@ class _FoodCategoryState extends State<FoodCategory> {
                                                     "quantity":
                                                         currentQuantity - 1
                                                   });
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
 
                                                   _showAlertDialog(
                                                       'Email sent! Please check your email for details. ',
@@ -219,6 +225,9 @@ class _FoodCategoryState extends State<FoodCategory> {
                                                     fetchData();
                                                   });
                                                 } catch (e) {
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
                                                   print(
                                                       'Error sending email: $e');
                                                   _showAlertDialog(

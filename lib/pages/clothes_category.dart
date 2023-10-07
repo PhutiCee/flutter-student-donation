@@ -187,9 +187,12 @@ class _ClothesCategoryState extends State<ClothesCategory> {
                                             height: 50,
                                             child: ElevatedButton(
                                               onPressed: () async {
+                                                setState(() {
+                                                  isLoading = true;
+                                                });
                                                 final data =
-                                                    documents[index].data()
-                                                        as Map<String, dynamic>;
+                                                documents[index].data()
+                                                as Map<String, dynamic>;
 
                                                 final smtpServer = gmail(
                                                     'tsptshepo382@gmail.com',
@@ -210,27 +213,33 @@ class _ClothesCategoryState extends State<ClothesCategory> {
                                                       'Message sent: ${sendReport.toString()}');
 
                                                   final int currentQuantity =
-                                                      data["quantity"];
+                                                  data["quantity"];
                                                   await FirebaseFirestore
                                                       .instance
                                                       .collection("donation")
                                                       .doc(documents[index].id)
                                                       .update({
                                                     "quantity":
-                                                        currentQuantity - 1
+                                                    currentQuantity - 1
+                                                  });
+                                                  setState(() {
+                                                    isLoading = false;
                                                   });
 
                                                   _showAlertDialog(
                                                       'Email sent! Please check your email for details. ',
-                                                      () {
-                                                    fetchData();
-                                                  });
+                                                          () {
+                                                        fetchData();
+                                                      });
                                                 } catch (e) {
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
                                                   print(
                                                       'Error sending email: $e');
                                                   _showAlertDialog(
                                                       'Failed to send email.',
-                                                      () {});
+                                                          () {});
                                                 }
                                               },
                                               style: ElevatedButton.styleFrom(
