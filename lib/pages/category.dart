@@ -104,23 +104,11 @@ class _CategoryState extends State<Category> {
             ),
             ListTile(
               leading: const Icon(Icons.book),
-              title: const Text(' My Work '),
+              title: const Text(' Request Donation '),
               onTap: () {
-                //Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.workspace_premium),
-              title: const Text(' Go Premium '),
-              onTap: () {
-                //Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text(' Edit Profile '),
-              onTap: () {
-                // Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return const Category();
+                }));
               },
             ),
             ListTile(

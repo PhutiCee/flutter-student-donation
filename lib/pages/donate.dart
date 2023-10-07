@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:student_donation/pages/home_page.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 
 class Donate extends StatefulWidget {
 
@@ -13,26 +15,60 @@ class Donate extends StatefulWidget {
 
 class _DonateState extends State<Donate> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+  //final TextEditingController _emailController = TextEditingController();
   final TextEditingController _donatorName = TextEditingController();
   final TextEditingController _itemNameController = TextEditingController();
   final TextEditingController _quantityController =
   TextEditingController();
 
-
+  final user = FirebaseAuth.instance.currentUser!;
   String? _dropdownValue = "Select category";
 
 
   Future<void> submitDonation() async {
-      //add user details
-      addUserDetails(
-        _donatorName.text.trim(),
-        _itemNameController.text.trim(),
-        _emailController.text.trim(),
-        int.parse(_quantityController.text.trim()),
-        _dropdownValue!.trim(),
-      );
+    // Get a list of all users in the database.
+    final users = await FirebaseFirestore.instance.collection('users').get();
+
+    // Add user details
+    final donatorName = _donatorName.text.trim();
+    final itemName = _itemNameController.text.trim();
+    //final email = _emailController.text.trim();
+    final email = user.email!;
+    final quantity = int.parse(_quantityController.text.trim());
+    final category = _dropdownValue!.trim();
+
+    addUserDetails(donatorName, itemName, email, quantity, category);
+
+    // Send email to each user
+    final smtpServer = gmail(
+      'tsptshepo382@gmail.com',
+      'yqwhjsicctwblvgm',
+    );
+
+    for (final user in users.docs) {
+      final recipientEmail = user['email'];
+
+      final message = Message()
+        ..from = Address('studentdonation@gmail.com')
+        ..recipients.add(recipientEmail)
+        ..subject = 'Donation Added'
+        ..text = 'A new donation item has been added: \n\n'
+            '* Donor Name: $donatorName \n'
+            '* Item Name: $itemName \n'
+            '* Category: $category \n\n'
+            'To view the new donation item, please visit the student donation app.\n\n'
+            'Sincerely,\n'
+            'The Student Donation Team';
+
+      try {
+        final sendReport = await send(message, smtpServer);
+        print('Message sent: ${sendReport.toString()}');
+      } catch (e) {
+        print('Error sending email: $e');
+      }
+    }
   }
+
 
   Future<void> addUserDetails(String donatorName, String itemName, String email,
       int quantity, String category) async {
@@ -45,20 +81,20 @@ class _DonateState extends State<Donate> {
     });
   }
 
-  String? _validateEmail(String? value) {
-    // if (_emailError != null) {
-    //   return _emailError;
-    // }
-    if (value == null || value.isEmpty) {
-      return 'Please enter your email';
-    }
-    const emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$';
-
-    if (!RegExp(emailPattern).hasMatch(value)) {
-      return 'Please enter a valid email address';
-    }
-    return null;
-  }
+  // String? _validateEmail(String? value) {
+  //   // if (_emailError != null) {
+  //   //   return _emailError;
+  //   // }
+  //   if (value == null || value.isEmpty) {
+  //     return 'Please enter your email';
+  //   }
+  //   const emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$';
+  //
+  //   if (!RegExp(emailPattern).hasMatch(value)) {
+  //     return 'Please enter a valid email address';
+  //   }
+  //   return null;
+  // }
 
   String? _validateInputs(String? value) {
     // if (_inputError != null) {
@@ -70,9 +106,10 @@ class _DonateState extends State<Donate> {
     return null;
   }
 
+
   @override
   void dispose() {
-    _emailController.dispose();
+    //_emailController.dispose();
     _donatorName.dispose();
     _itemNameController.dispose();
     _quantityController.dispose();
@@ -160,20 +197,20 @@ class _DonateState extends State<Donate> {
                   const SizedBox(height: 20),
 
                   // Email TextInput
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: TextFormField(
-                      controller: _emailController,
-                      validator: _validateEmail,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        hintText: "Email",
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  //   child: TextFormField(
+                  //     controller: _emailController,
+                  //     validator: _validateEmail,
+                  //     decoration: InputDecoration(
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(12),
+                  //       ),
+                  //       hintText: "Email",
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 20),
 
                   // Quantity TextInput
                   Padding(

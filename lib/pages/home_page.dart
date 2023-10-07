@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:student_donation/components/my_card.dart';
 import 'package:student_donation/pages/category.dart';
 import 'package:student_donation/pages/donate.dart';
+import 'package:student_donation/pages/top_donators.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -76,7 +76,9 @@ class _HomePageState extends State<HomePage> {
               leading: const Icon(Icons.person),
               title: const Text(' Top Donators '),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return const TopDonator();
+                }));
               },
             ),
             ListTile(

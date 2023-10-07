@@ -85,15 +85,6 @@ class _FoodCategoryState extends State<FoodCategory> {
         backgroundColor: Colors.blueAccent.shade200,
         title: const Text("Food Categories"),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: GestureDetector(
-              onTap: () {},
-              child: const Icon(Icons.notifications),
-            ),
-          ),
-        ],
       ),
       body: Center(
         child: Column(
